@@ -23,34 +23,45 @@
           datasets: [{
             label: 'Humor médio',
             data: values,
-            borderColor: '#3498db',
-            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+            borderColor: '#1a1a1a',
+            backgroundColor: 'transparent',
             borderWidth: 2,
-            fill: true,
-            tension: 0.3,
-            pointRadius: 4,
-            pointBackgroundColor: '#3498db',
+            fill: false,
+            tension: 0,
+            pointRadius: 0,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: '#1a1a1a',
+            pointHoverBorderColor: '#f5f5f0',
+            pointHoverBorderWidth: 2,
             spanGaps: true
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
           plugins: {
             legend: {
               display: false
             },
             tooltip: {
               backgroundColor: '#1a1a1a',
-              titleColor: '#fff',
-              bodyColor: '#aaa',
-              borderColor: '#333',
-              borderWidth: 1,
+              titleColor: '#f5f5f0',
+              bodyColor: '#f5f5f0',
+              titleFont: { family: 'Space Mono', size: 10, weight: 'normal' },
+              bodyFont: { family: 'Space Grotesk', size: 13 },
+              padding: 12,
+              cornerRadius: 8,
+              displayColors: false,
               callbacks: {
+                title: () => '',
                 label: (context) => {
                   const value = context.raw;
                   if (value === null) return 'Sem dados';
-                  return `Humor: ${value.toFixed(1)}`;
+                  return `${value.toFixed(1)} / 5`;
                 }
               }
             }
@@ -58,28 +69,34 @@
           scales: {
             x: {
               grid: {
-                color: '#333',
-                drawBorder: false
+                display: false
+              },
+              border: {
+                display: false
               },
               ticks: {
-                color: '#666',
-                font: { size: 10 }
+                color: '#999',
+                font: { family: 'Space Mono', size: 9 },
+                padding: 8
               }
             },
             y: {
               min: 1,
               max: 5,
               grid: {
-                color: '#333',
-                drawBorder: false
+                color: '#ddd',
+                drawBorder: false,
+                lineWidth: 1
+              },
+              border: {
+                display: false
               },
               ticks: {
-                color: '#666',
+                color: '#999',
+                font: { family: 'Space Mono', size: 9 },
                 stepSize: 1,
-                callback: (value) => {
-                  const emojis = { 1: '😞', 2: '😕', 3: '😐', 4: '🙂', 5: '😊' };
-                  return emojis[value] || value;
-                }
+                padding: 8,
+                callback: (value) => value
               }
             }
           }
@@ -110,6 +127,6 @@
 <style>
   .chart-container {
     width: 100%;
-    height: 200px;
+    height: 160px;
   }
 </style>

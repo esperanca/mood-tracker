@@ -16,7 +16,6 @@
 
       const labels = MOODS.map(m => m.emoji);
       const values = MOODS.map(m => distribution[m.value] || 0);
-      const colors = MOODS.map(m => m.color);
 
       chart = new Chart(ctx, {
         type: 'bar',
@@ -25,9 +24,10 @@
           datasets: [{
             label: 'Quantidade',
             data: values,
-            backgroundColor: colors,
-            borderRadius: 4,
-            barThickness: 30
+            backgroundColor: '#1a1a1a',
+            borderRadius: 2,
+            barThickness: 24,
+            maxBarThickness: 32
           }]
         },
         options: {
@@ -39,10 +39,17 @@
             },
             tooltip: {
               backgroundColor: '#1a1a1a',
-              titleColor: '#fff',
-              bodyColor: '#aaa',
-              borderColor: '#333',
-              borderWidth: 1
+              titleColor: '#f5f5f0',
+              bodyColor: '#f5f5f0',
+              titleFont: { family: 'Space Mono', size: 10, weight: 'normal' },
+              bodyFont: { family: 'Space Grotesk', size: 13 },
+              padding: 12,
+              cornerRadius: 8,
+              displayColors: false,
+              callbacks: {
+                title: () => '',
+                label: (context) => `${context.raw} registros`
+              }
             }
           },
           scales: {
@@ -50,19 +57,29 @@
               grid: {
                 display: false
               },
+              border: {
+                display: false
+              },
               ticks: {
-                color: '#fff',
-                font: { size: 20 }
+                color: '#1a1a1a',
+                font: { size: 18 },
+                padding: 8
               }
             },
             y: {
               beginAtZero: true,
               grid: {
-                color: '#333',
-                drawBorder: false
+                color: '#ddd',
+                drawBorder: false,
+                lineWidth: 1
+              },
+              border: {
+                display: false
               },
               ticks: {
-                color: '#666',
+                color: '#999',
+                font: { family: 'Space Mono', size: 9 },
+                padding: 8,
                 stepSize: 1
               }
             }
@@ -94,6 +111,6 @@
 <style>
   .chart-container {
     width: 100%;
-    height: 180px;
+    height: 140px;
   }
 </style>

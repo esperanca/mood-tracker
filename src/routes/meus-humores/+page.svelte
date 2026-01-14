@@ -28,46 +28,59 @@
 </script>
 
 <div class="container">
-  <header class="header">
-    <h1>Meus Humores</h1>
-    <p class="subtitle">Seu histórico pessoal</p>
+  <header class="page-header">
+    <span class="label">ANALYTICS</span>
+    <h1 class="title-lg">Meus Humores</h1>
   </header>
 
   {#if moods.length === 0}
     <div class="empty-state">
-      <span class="empty-emoji">📊</span>
-      <h2>Nenhum registro ainda</h2>
-      <p>Comece a registrar seus humores para ver as estatísticas aqui.</p>
-      <a href="/" class="btn btn-primary">Registrar humor</a>
+      <div class="empty-icon">◐</div>
+      <h2 class="title-sm">Nenhum registro</h2>
+      <p class="text-secondary text-center">
+        Comece a registrar seus humores para ver estatísticas.
+      </p>
+      <a href="/" class="btn btn-primary mt-24">Registrar humor</a>
     </div>
   {:else}
-    <section class="stats-grid">
+    <div class="stats-row">
       <div class="stat-card">
-        <span class="stat-value">{moods.length}</span>
-        <span class="stat-label">Total de registros</span>
+        <span class="label">TOTAL</span>
+        <div class="stat-value mono">{moods.length}</div>
       </div>
       <div class="stat-card">
-        <span class="stat-value">{weeklyMoods.length}</span>
-        <span class="stat-label">Últimos 7 dias</span>
+        <span class="label">7 DIAS</span>
+        <div class="stat-value mono">{weeklyMoods.length}</div>
       </div>
       <div class="stat-card">
-        <span class="stat-value">{averageMood > 0 ? averageMood.toFixed(1) : '-'}</span>
-        <span class="stat-label">Média semanal</span>
+        <span class="label">MÉDIA</span>
+        <div class="stat-value mono">{averageMood > 0 ? averageMood.toFixed(1) : '—'}</div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="label">TENDÊNCIA SEMANAL</span>
+      </div>
+      <div class="chart-card">
+        <TrendChart data={dailyAverages} />
       </div>
     </section>
 
-    <section class="card">
-      <h2 class="section-title">Tendência Semanal</h2>
-      <TrendChart data={dailyAverages} />
+    <section class="section">
+      <div class="section-header">
+        <span class="label">DISTRIBUIÇÃO</span>
+      </div>
+      <div class="chart-card">
+        <DistributionChart {distribution} />
+      </div>
     </section>
 
-    <section class="card">
-      <h2 class="section-title">Distribuição</h2>
-      <DistributionChart {distribution} />
-    </section>
-
-    <section class="card">
-      <h2 class="section-title">Últimos Registros</h2>
+    <section class="section">
+      <div class="section-header">
+        <span class="label">HISTÓRICO</span>
+        <span class="label text-muted">Últimos 10</span>
+      </div>
       <div class="moods-list">
         {#each recentMoods as entry (entry.id)}
           <MoodCard {entry} />
@@ -75,34 +88,38 @@
       </div>
     </section>
 
-    <section class="actions">
-      <h2 class="section-title">Exportar Dados</h2>
-      <div class="export-buttons">
+    <section class="section">
+      <div class="section-header">
+        <span class="label">EXPORTAR</span>
+      </div>
+      <div class="export-row">
         <button class="btn btn-secondary" onclick={handleExportJSON}>
-          Exportar JSON
+          JSON
         </button>
         <button class="btn btn-secondary" onclick={handleExportCSV}>
-          Exportar CSV
+          CSV
         </button>
       </div>
     </section>
 
-    <section class="danger-zone">
-      <h2 class="section-title">Zona de Perigo</h2>
+    <section class="section danger-section">
+      <div class="section-header">
+        <span class="label">DADOS</span>
+      </div>
       {#if showClearConfirm}
-        <div class="confirm-delete">
-          <p>Tem certeza? Esta ação não pode ser desfeita.</p>
-          <div class="confirm-buttons">
+        <div class="confirm-box">
+          <p class="confirm-text">Tem certeza? Esta ação não pode ser desfeita.</p>
+          <div class="confirm-actions">
             <button class="btn btn-secondary" onclick={() => showClearConfirm = false}>
               Cancelar
             </button>
             <button class="btn btn-danger" onclick={handleClearAll}>
-              Confirmar exclusão
+              Excluir tudo
             </button>
           </div>
         </div>
       {:else}
-        <button class="btn btn-danger btn-full" onclick={() => showClearConfirm = true}>
+        <button class="btn btn-ghost btn-full" onclick={() => showClearConfirm = true}>
           Limpar todos os dados
         </button>
       {/if}
@@ -111,76 +128,70 @@
 </div>
 
 <style>
-  .header {
-    text-align: center;
-    margin-bottom: 24px;
+  .page-header {
+    margin-bottom: 32px;
   }
 
-  .header h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-
-  .subtitle {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 48px 16px;
-  }
-
-  .empty-emoji {
-    font-size: 4rem;
+  .page-header .label {
     display: block;
-    margin-bottom: 16px;
-  }
-
-  .empty-state h2 {
-    font-size: 1.25rem;
     margin-bottom: 8px;
   }
 
-  .empty-state p {
-    color: var(--text-secondary);
-    margin-bottom: 24px;
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px;
   }
 
-  .stats-grid {
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    color: var(--text-muted);
+  }
+
+  .stats-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
   }
 
   .stat-card {
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    padding: 16px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 16px;
     text-align: center;
   }
 
-  .stat-value {
+  .stat-card .label {
     display: block;
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
-  .stat-label {
-    font-size: 0.625rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
   }
 
-  .section-title {
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 16px;
+  .section {
+    margin-bottom: 32px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
   }
 
   .moods-list {
@@ -189,43 +200,50 @@
     gap: 12px;
   }
 
-  .actions {
-    margin-top: 24px;
-  }
-
-  .export-buttons {
+  .export-row {
     display: flex;
     gap: 12px;
   }
 
-  .export-buttons .btn {
+  .export-row .btn {
     flex: 1;
   }
 
-  .danger-zone {
-    margin-top: 32px;
+  .danger-section {
     padding-top: 24px;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-light);
   }
 
-  .confirm-delete {
-    background: var(--bg-secondary);
-    border-radius: 12px;
-    padding: 16px;
+  .confirm-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+  }
+
+  .confirm-text {
     text-align: center;
-  }
-
-  .confirm-delete p {
     color: var(--text-secondary);
     margin-bottom: 16px;
   }
 
-  .confirm-buttons {
+  .confirm-actions {
     display: flex;
     gap: 12px;
   }
 
-  .confirm-buttons .btn {
+  .confirm-actions .btn {
     flex: 1;
+  }
+
+  .btn-danger {
+    background: transparent;
+    color: #c0392b;
+    border: 2px solid #c0392b;
+  }
+
+  .btn-danger:hover {
+    background: #c0392b;
+    color: var(--bg-primary);
   }
 </style>

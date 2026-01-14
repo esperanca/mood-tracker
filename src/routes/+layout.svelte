@@ -10,7 +10,7 @@
   <link rel="icon" href={favicon} />
   <title>Mood Tracker</title>
   <meta name="description" content="Rastreie seu humor com privacidade total. Dados 100% locais." />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#f5f5f0" />
 </svelte:head>
 
 <main>

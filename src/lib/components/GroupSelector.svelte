@@ -22,12 +22,16 @@
 </script>
 
 <div class="group-selector">
-  <p class="hint">Selecione até {MAX_GROUPS_PER_ENTRY} grupos ({selected.length}/{MAX_GROUPS_PER_ENTRY})</p>
-  <div class="groups-grid">
+  <div class="selector-header">
+    <span class="label">CONTEXTO</span>
+    <span class="counter">{selected.length}/{MAX_GROUPS_PER_ENTRY}</span>
+  </div>
+
+  <div class="groups-wrap">
     {#each GROUPS as group}
       <button
         type="button"
-        class="group-btn"
+        class="group-pill"
         class:selected={isSelected(group.id)}
         class:disabled={isDisabled(group.id)}
         onclick={() => toggleGroup(group.id)}
@@ -45,57 +49,59 @@
     width: 100%;
   }
 
-  .hint {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
+  .selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 16px;
-    text-align: center;
   }
 
-  .groups-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  .counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .groups-wrap {
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
   }
 
-  .group-btn {
-    display: flex;
-    flex-direction: column;
+  .group-pill {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 12px 8px;
-    min-height: 70px;
-    background: var(--bg-secondary);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    transition: all 0.2s ease;
+    gap: 6px;
+    padding: 10px 16px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 100px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
   }
 
-  .group-btn:hover:not(.disabled) {
-    border-color: var(--text-muted);
+  .group-pill:hover:not(.disabled):not(.selected) {
+    background: var(--bg-muted);
   }
 
-  .group-btn.selected {
-    background: var(--bg-tertiary);
-    border-color: var(--accent);
+  .group-pill.selected {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--text-primary);
   }
 
-  .group-btn.disabled {
-    opacity: 0.4;
+  .group-pill.disabled {
+    opacity: 0.25;
     cursor: not-allowed;
   }
 
   .group-emoji {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   .group-label {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-  }
-
-  .group-btn.selected .group-label {
-    color: var(--text-primary);
+    white-space: nowrap;
   }
 </style>
