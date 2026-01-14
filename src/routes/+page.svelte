@@ -63,7 +63,7 @@
 <div class="container">
   <header class="header">
     <h1>Mood Tracker</h1>
-    <p class="subtitle">Como você está se sentindo?</p>
+    <p class="subtitle">O que mais influenciou seu humor hoje?</p>
   </header>
 
   {#if showSuccess}
